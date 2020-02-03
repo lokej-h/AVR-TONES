@@ -1,0 +1,4 @@
+*.xml
+GccApplication2/Debug/
+GccApplication2/Release/
+.vs/
