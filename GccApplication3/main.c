@@ -361,6 +361,9 @@ void timeChange(int button)
 	}
 }
 	
+	//[A][As][B][C][Cs][D][Ds][E][Fs][G][Gs]
+int notes{1136,1073,1012,956,902,851,804,758,716,676,638}	
+	
 int main(void)
 {
 	//0 for output, 1 for input
@@ -386,8 +389,14 @@ int main(void)
 	//button_test();
 	//lcd_puts2("ooooo ");
 	lcd_write_time();
+	DDRA=0x01;
+	
     while (1) 
     {
+		PORTA=0x01;
+		avr_wait(10000);
+		PORTA=0x00;
+		avr_wait(10000);
 		/*if(PIND & (1<<PIND0))	//if pin 1 in port D is high
 		{
 			button=findWhichPin();
@@ -395,15 +404,16 @@ int main(void)
 		else
 		{
 			LED_OFF;
+			
+			timeTick();
+			lcd_write_time();
+			avr_wait(1000);
+			int button = findWhichPin();
+			if(button !=0)
+			{
+				timeChange(button);
+			}
 		}*/
-		timeTick();
-		lcd_write_time();
-		avr_wait(1000);
-		int button = findWhichPin();
-		if(button !=0)
-		{		
-			timeChange(button);
-		}
 	}
 }
 
