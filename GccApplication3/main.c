@@ -21,8 +21,9 @@
 #define CONVERT_TO_CHAR(x) (x + '0')
 #define SET_LOW(p,i) p &= !(1<<i)
 #define SET_HIGH(p,i) p |= (1<<i)
-
-
+#define NumNotes(x) sizeof(x)/sizeof(Note)
+#define SPK_ON PORTB |= 0x01;
+#define SPK_OFF PORTB |= 0x00;
 typedef struct {
 	int sec ;
 	int min ;
@@ -33,6 +34,33 @@ typedef struct {
 	// int am ;
 }current_time;
 
+
+typedef struct
+{
+	int freq, duration;
+}Note;
+
+
+
+void PlayNote(Note noteIn)
+{
+	int k =noteIn.duration*noteIn.freq;
+	int t = 1/(2*noteIn.freq);
+	for(int i=0; i<k; ++i)
+	{
+		SPK_ON;
+		small_wait(t);
+		SPK_ON;
+		small_wait(t);
+	}
+}
+void PlaySong(Note* songIn)
+{
+	for(int i=0; i<NumNotes(songIn); ++i)
+	{
+		PlayNote(songIn[i]);
+	}
+}
 current_time ct;
 
 int MILLITARY = TRUE;
@@ -361,9 +389,10 @@ void timeChange(int button)
 	}
 }
 	
-	//[A][As][B][C][Cs][D][Ds][E][Fs][G][Gs]
-int notes{1136,1073,1012,956,902,851,804,758,716,676,638}	
-	
+	//	  [A]  [As]  [B] [C][Cs] [D] [Ds][E] [Fs][G][Gs]
+//int notes{1136,1073,1012,956,902,851,804,758,716,676,638};
+
+
 int main(void)
 {
 	//0 for output, 1 for input
@@ -390,13 +419,13 @@ int main(void)
 	//lcd_puts2("ooooo ");
 	lcd_write_time();
 	DDRA=0x01;
-	
+	DDRB=0x01;
     while (1) 
     {
-		PORTA=0x01;
-		avr_wait(10000);
-		PORTA=0x00;
-		avr_wait(10000);
+		PORTB=0x01;
+		avr_wait(2);
+		PORTB=0x00;
+		avr_wait(2);
 		/*if(PIND & (1<<PIND0))	//if pin 1 in port D is high
 		{
 			button=findWhichPin();
