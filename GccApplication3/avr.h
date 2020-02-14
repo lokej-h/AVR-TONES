@@ -19,4 +19,6 @@ void avr_init(void);
 
 void avr_wait(unsigned short msec);
 
+void avr_wait_usec(unsigned long usec);
+
 #endif /* _AVR_H */
