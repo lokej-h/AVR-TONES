@@ -12,6 +12,7 @@
 #include "my_lcd.h"
 #include "my_keypad.h"
 #include "lcd_time.h"
+#include "music.h"
 
 #define TRUE 1
 #define FALSE 0

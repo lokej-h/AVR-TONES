@@ -5,6 +5,9 @@
 #define SPK_OFF PORTB |= 0x00;
 #define NumNotes(x) sizeof(x)/sizeof(Note)
 
+#define G3	2551
+#define Gs3	2408
+#define Af3	2408
 #define A3	2273
 #define As3	2145
 #define Bf3	2145
@@ -62,9 +65,9 @@ void PlayNote(Note noteIn)
 	for(int i=0; i<k; ++i)
 	{
 		SPK_ON;
-		small_wait(t);
+		avr_wait_usec(t);
 		SPK_ON;
-		small_wait(t);
+		avr_wait_usec(t);
 	}
 }
 void PlaySong(Note* songIn)
@@ -89,69 +92,71 @@ void note_test(int note)
 //int notes{1136,1073,1012,956,902,851,804,758,716,676,638};
 
 Note new_song[] ={
-    {C, W},
-    {E, W},
-    {G, W},
-    {B, W},
-    {G, W},
-    {E, W},
-    {C, W},
+    {C4, W},
+    {E4, W},
+    {G4, W},
+    {B4, W},
+    {G4, W},
+    {E4, W},
+    {C4, W},
 };
 
 Note WMIH[52] = {
-	{Bf3, 8},
-	{G4, 16},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{D4, 8},
-	{Ef4, 8},
-	{G4, 8},
-	{G4, 8},
-	{Ef4, 8},
-	{D4, 2},
+	{Bf3, Ei},
+	{G4, S},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{D4, Ei},
+	{Ef4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{Ef4, Ei},
+	{D4, H},
 	
-	{Bf3, 8},
-	{G4, 16},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{D4, 8},
-	{Ef4, 8},
-	{D4, 8},
-	{Bf4, 8},
-	{A4, 8},
-	{G3, 2},
+	{Bf3, Ei},
+	{G4, S},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{D4, Ei},
+	{Ef4, Ei},
+	{D4, Ei},
+	{Bf4, Ei},
+	{A4, Ei},
+	{G3, H},
 	
-	{Bf3, 8},
-	{G4, 16},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{D4, 8},
-	{Ef4, 8},
-	{G4, 8},
-	{G4, 8},
-	{Ef4, 8},
-	{D4, 2},
+	{Bf3, Ei},
+	{G4, S},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{D4, Ei},
+	{Ef4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{Ef4, Ei},
+	{D4, H},
 	
-	{Bf3, 8},
-	{G4, 16},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{G4, 8},
-	{D4, 8},
-	{Ef4, 8},
-	{D4, 8},
-	{Bf4, 8},
-	{A4, 8},
-	{G3, 2}
-}
+	{Bf3, Ei},
+	{G4, S},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{G4, Ei},
+	{D4, Ei},
+	{Ef4, Ei},
+	{D4, Ei},
+	{Bf4, Ei},
+	{A4, Ei},
+	{G3, H}
+};
+
+#endif // MUSIC
