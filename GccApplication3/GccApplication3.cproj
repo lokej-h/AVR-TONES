@@ -157,6 +157,9 @@
     <Compile Include="main.c">
       <SubType>compile</SubType>
     </Compile>
+    <Compile Include="music.h">
+      <SubType>compile</SubType>
+    </Compile>
     <Compile Include="my_keypad.c">
       <SubType>compile</SubType>
     </Compile>
