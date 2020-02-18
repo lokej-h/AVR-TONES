@@ -129,11 +129,13 @@ char getButtonValue(int buttonIn)
 
 unsigned char findWhichPin()
 {
-	avr_wait(250);
+	// avr_wait(250);
 	int row = get_row();
 	int col = get_col();
 	if (row != -1 && col != -1)
 	{
+		// wait until button up
+		while (get_row() != -1 && get_col() != -1) {}
 		return ((row*4)+col+1);
 	}
 	return 0;
