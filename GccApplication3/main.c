@@ -24,6 +24,27 @@
 #define NumNotes(x) sizeof(x)/sizeof(Note)
 #define SPK_ON PORTB |= 0x01;
 #define SPK_OFF PORTB |= 0x00;
+
+#define A 1136
+#define As 1073
+#define B 1012
+#define C 956
+#define Cs 902
+#define D 851
+#define Ds 804
+#define E 758
+#define F 716
+#define Fs 676
+#define G 638
+#define Gs 602
+
+#define TEMPO 100000ul
+#define W 1.0
+#define H .5
+#define Q .25
+#define Ei .125
+#define S .0625
+
 typedef struct {
 	int sec ;
 	int min ;
@@ -40,23 +61,33 @@ typedef struct
 	int freq, duration;
 }Note;
 
-
+//	  [A]  [As]  [B] [C][Cs] [D] [Ds][E] [Fs][G][Gs]
+//int notes{1136,1073,1012,956,902,851,804,758,716,676,638};
+Note new_song[] ={
+	{C, W},
+	{E, W},
+	{G, W},
+	{B, W},
+	{G, W},
+	{E, W},
+	{C, W},
+};
 
 void PlayNote(Note noteIn)
 {
-	int k =noteIn.duration*noteIn.freq;
-	int t = 1/(2*noteIn.freq);
+	long int k = 10000000; // noteIn.duration/(2*noteIn.freq);
+	int t = noteIn.freq; // 1/(2*noteIn.freq);
 	for(int i=0; i<k; ++i)
 	{
 		SPK_ON;
-		small_wait(t);
+		avr_wait_usec(t);
 		SPK_ON;
-		small_wait(t);
+		avr_wait_usec(t);
 	}
 }
 void PlaySong(Note* songIn)
 {
-	for(int i=0; i<NumNotes(songIn); ++i)
+	for(int i=0; i<7; ++i)
 	{
 		PlayNote(songIn[i]);
 	}
@@ -391,6 +422,16 @@ void timeChange(int button)
 	
 	//	  [A]  [As]  [B] [C][Cs] [D] [Ds][E] [Fs][G][Gs]
 //int notes{1136,1073,1012,956,902,851,804,758,716,676,638};
+	//	  [A]  [As]  [B] [C][Cs] [D] [Ds][E] [Fs][G][Gs]
+//int notes{1136,1073,1012,956,902,851,804,758,716,676,638};
+
+void note_test(int note)
+{
+	PORTB=0x01;
+	avr_wait_usec(note);
+	PORTB=0x00;
+	avr_wait_usec(note);
+}
 
 
 int main(void)
@@ -422,10 +463,8 @@ int main(void)
 	DDRB=0x01;
     while (1) 
     {
-		PORTB=0x01;
-		avr_wait(2);
-		PORTB=0x00;
-		avr_wait(2);
+		//note_test(Fs);
+		PlaySong(new_song);
 		/*if(PIND & (1<<PIND0))	//if pin 1 in port D is high
 		{
 			button=findWhichPin();
