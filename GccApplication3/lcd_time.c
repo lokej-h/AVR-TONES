@@ -145,7 +145,7 @@ void update_seconds()
 	lcd_put(CONVERT_TO_INT(ct.sec%10));
 }
 
-inline void colon_off()
+void colon_off()
 {
 	lcd_pos(1,2);
 	lcd_put(' ');
@@ -153,7 +153,7 @@ inline void colon_off()
 	lcd_put(' ');
 }
 
-inline void colon_on()
+void colon_on()
 {
 	lcd_pos(1,2);
 	lcd_put(':');

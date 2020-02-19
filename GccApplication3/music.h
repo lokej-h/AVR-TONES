@@ -66,7 +66,7 @@ void PlayNote(Note noteIn)
 	{
 		SPK_ON;
 		avr_wait_usec(t);
-		SPK_ON;
+		SPK_OFF;
 		avr_wait_usec(t);
 	}
 }
@@ -158,5 +158,28 @@ Note WMIH[52] = {
 	{A4, Ei},
 	{G3, H}
 };
+
+Note BELL[] = {
+	{G4, Q},
+	{F4, Q},
+	{E4, Q},
+		
+	{F4, Q},
+	{E4, Q},
+	{D4, Q},
+	
+	{E4, Q},
+	{D4, Q},
+	{C4, Q},
+	{D4, Q},
+			
+	{G3, W},
+	{G3, W},
+	
+	{G3, Q},
+	{A3, Q},
+	{B3, Q},
+	{C4, Q}
+	}
 
 #endif // MUSIC
