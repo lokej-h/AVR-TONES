@@ -36,11 +36,14 @@ int main(void)
 	lcd_clr();
 	lcd_pos(0,0);
 	lcd_write_time();
-	
+	SPK_INIT;
 	
     while (1) 
     {
-		
+		Note a = {D4, W};
+		//PlayNote(a);
+		PlaySong(BELL);
+		avr_wait(1000);
 	}
 }
 

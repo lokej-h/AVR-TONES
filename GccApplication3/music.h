@@ -1,8 +1,9 @@
 #ifndef MUSIC
 #define MUSIC
 
-#define SPK_ON PORTB |= 0x01;
-#define SPK_OFF PORTB |= 0x00;
+#define SPK_INIT DDRB &= 0x00
+#define SPK_ON PORTB |= 0x01
+#define SPK_OFF PORTB &= 0x00
 #define NumNotes(x) sizeof(x)/sizeof(Note)
 
 #define G3	2551
@@ -42,8 +43,9 @@
 #define G5	638
 #define Gs5	602
 #define Af5	602
+#define R 10
 
-#define TEMPO 60
+#define TEMPO 120
 #define W 4
 #define H 2
 #define Q 1
@@ -63,21 +65,28 @@ typedef struct
 void PlayNote(Note noteIn)
 {
 	int period = 2*noteIn.freq;
-	int numPeriods = ((TEMPO/60)*noteIn.duration)/period;
+	int numPeriods = ((60.0/TEMPO)*noteIn.duration*1000000)/period;
 	int ton = period*DUTYCYCLE;
 	int toff = period-ton;
 	for(int i=0; i<numPeriods; ++i)
 	{
-		SPK_ON;
-		avr_wait_usec(ton);
-		SPK_OFF;
-		avr_wait_usec(toff);
+		if (noteIn.freq == 10)
+		{
+			SPK_OFF;
+			avr_wait_usec((60.0/TEMPO)*1000000);
+		}
+		else{
+			SPK_ON;
+			avr_wait_usec(ton);
+			SPK_OFF;
+			avr_wait_usec(toff);
+		}
 	}
 }
 
-void PlaySong(Note* songIn)
+void PlaySong(Note songIn[])
 {
-	for(int i=0; i<NumNotes(songIn); ++i)
+	for(int i=0; i<18; ++i)
 	{
 		PlayNote(songIn[i]);
 	}
@@ -86,9 +95,9 @@ void PlaySong(Note* songIn)
 
 void note_test(int note)
 {
-    PORTB=0x01;
+    PORTB|=0x01;
     avr_wait_usec(note);
-    PORTB=0x00;
+    PORTB&=0x00;
     avr_wait_usec(note);
 }
 
@@ -97,13 +106,13 @@ void note_test(int note)
 //int notes{1136,1073,1012,956,902,851,804,758,716,676,638};
 
 Note new_song[] ={
-    {C4, W},
-    {E4, W},
-    {G4, W},
-    {B4, W},
-    {G4, W},
-    {E4, W},
-    {C4, W},
+    {C4, Q},
+    {E4, Q},
+    {G4, Q},
+    {B4, Q},
+    {G4, Q},
+    {E4, Q},
+    {C4, Q},
 };
 
 Note WMIH[52] = {
@@ -179,12 +188,13 @@ Note BELL[] = {
 	{D4, Q},
 			
 	{G3, W},
+	{R,	S},
 	{G3, W},
 	
 	{G3, Q},
 	{A3, Q},
 	{B3, Q},
 	{C4, Q}
-	}
+};
 
 #endif // MUSIC
