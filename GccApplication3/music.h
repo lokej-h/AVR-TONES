@@ -43,12 +43,12 @@
 #define Gs5	602
 #define Af5	602
 
-#define TEMPO 100000ul
-#define W 1.0
-#define H .5
-#define Q .25
-#define Ei .125
-#define S .0625
+#define TEMPO 60
+#define W 4
+#define H 2
+#define Q 1
+#define Ei .5
+#define S .25
 
 
 typedef struct
@@ -60,9 +60,10 @@ typedef struct
 
 void PlayNote(Note noteIn)
 {
-	int k =noteIn.duration*noteIn.freq;
-	int t = 1/(2*noteIn.freq);
-	for(int i=0; i<k; ++i)
+	int period = 2*noteIn.freq;
+	int numPeriods = ((TEMPO/60)*noteIn.duration)/period;
+	int t = noteIn.freq*1;
+	for(int i=0; i<numPeriods; ++i)
 	{
 		SPK_ON;
 		avr_wait_usec(t);
