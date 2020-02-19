@@ -51,6 +51,8 @@
 #define S .25
 
 
+float DUTYCYCLE = .5;
+
 typedef struct
 {
 	int freq, duration;
@@ -62,15 +64,17 @@ void PlayNote(Note noteIn)
 {
 	int period = 2*noteIn.freq;
 	int numPeriods = ((TEMPO/60)*noteIn.duration)/period;
-	int t = noteIn.freq*1;
+	int ton = period*DUTYCYCLE;
+	int toff = period-ton;
 	for(int i=0; i<numPeriods; ++i)
 	{
 		SPK_ON;
-		avr_wait_usec(t);
+		avr_wait_usec(ton);
 		SPK_OFF;
-		avr_wait_usec(t);
+		avr_wait_usec(toff);
 	}
 }
+
 void PlaySong(Note* songIn)
 {
 	for(int i=0; i<NumNotes(songIn); ++i)
