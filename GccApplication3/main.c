@@ -23,97 +23,94 @@
 #define SET_HIGH(p,i) p |= (1<<i)
 
 enum PlayStates {Playing, Menu} State;
-
+int buttonPressed=0;
 
 void Tick()
 {
 	static Note* song;
 	static int currentNote;
 	static int songLen;
+	
+	buttonPressed = findWhichPin();
 	switch(State)
 	{
 		case Playing:
-			if (get_button_press() == '*')
+			if (buttonPressed == '*')
 			{
 				State = Menu;
 			}
-			if (currentNote == songLen)
+			else if (currentNote == songLen)
 			{
 				State = Menu;
+			}
+			//else contiune to play
+			else
+			{
+				PlayNote(song[currentNote]);
+				currentNote++;
 			}
 			break;
 		case Menu:
-			break;			
-	}
-	switch(State)
-	{
-		case Menu:
 		{
-			if (get_button_press() == '1')
+			
+			if (buttonPressed == '1')
 			{
 				DUTYCYCLE = .5;
 				lcd_pos(1,0);
 				lcd_puts2("Volume: HIGH");
 			}
-			if (get_button_press() == '2')
+			else if (buttonPressed == '2')
 			{
 				DUTYCYCLE = .3;
 				lcd_pos(1,0);
 				lcd_puts2("Volume: MID");
 			}
-			if (get_button_press() == '3')
+			else if (buttonPressed == '3')
 			{
 				DUTYCYCLE = .1;
 				lcd_pos(1,0);
 				lcd_puts2("Volume: LOW");
 			}
-			if (get_button_press() == '4')
+			else if (buttonPressed == '4')
 			{
 				FMOD = 100;
 			}
-			if (get_button_press() == '5')
+			else if (buttonPressed == '5')
 			{
 				FMOD = 0;
 			}
-			if (get_button_press() == '6')
+			else if (buttonPressed == '6')
 			{
 				FMOD = -100;
-			}		
-			do //is state change
-			{
-				if (get_button_press() == '0')
+			}
+			else if (buttonPressed == '0')
 				{
 					song = WMIH;
 					lcd_pos(0,0);
 					lcd_puts2("When Mom Isn't Home");
 					State = Playing;
 				}
-				if (get_button_press() == '#')
+			else if (buttonPressed == '#')
 				{
 					song = BELL;
 					lcd_pos(0,0);
-					lcd_puts2("SchoolBells");
+					lcd_puts2("School Bells");
 					State = Playing;
 				}
-			} while (expression);
-			if (get_button_press() == '7')
+			else if (buttonPressed == '7')
 			{
 				TEMPO = 75;
-			}	
-			if (get_button_press() == '8')
+			}
+			else if (buttonPressed == '8')
 			{
 				TEMPO = 120;
 			}
-			if (get_button_press() == '9')
+			else if (buttonPressed == '9')
 			{
 				TEMPO = 150;
-			}			
-		}
-		case Playing:	
-		{
-			PlayNote(song[currentNote]);
-			currentNote++;
-		}
+			}
+			break;
+		}		
 	}
 }
 
@@ -129,15 +126,25 @@ int main(void)
 	lcd_init();
 	lcd_clr();
 	lcd_pos(0,0);
-	lcd_write_time();
+	lcd_puts2("Music Player");
+	lcd_pos(1,0);
+	lcd_puts2("Volume: MID");
+	DUTYCYCLE = .3;
+	TEMPO = 120;
+	FMOD = 0;
+	//lcd_write_time();
 	SPK_INIT;
-	
+	State = Menu;
     while (1) 
     {
+		/*
 		Note a = {D4, W};
 		//PlayNote(a);
 		PlaySong(BELL);
 		avr_wait(1000);
+		*/
+		
+		Tick();
 	}
 }
 

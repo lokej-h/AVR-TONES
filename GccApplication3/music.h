@@ -52,7 +52,7 @@
 #define S .25
 
 
-float DUTYCYCLE = .5;
+float DUTYCYCLE = .3;
 int FMOD = 0;
 int TEMPO = 120;
 
