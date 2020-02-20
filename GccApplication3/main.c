@@ -22,6 +22,100 @@
 #define SET_LOW(p,i) p &= !(1<<i)
 #define SET_HIGH(p,i) p |= (1<<i)
 
+enum PlayStates {Playing, Menu} State;
+
+
+void Tick()
+{
+	static Note* song;
+	static int currentNote;
+	static int songLen;
+	switch(State)
+	{
+		case Playing:
+			if (get_button_press() == '*')
+			{
+				State = Menu;
+			}
+			if (currentNote == songLen)
+			{
+				State = Menu;
+			}
+			break;
+		case Menu:
+			break;			
+	}
+	switch(State)
+	{
+		case Menu:
+		{
+			if (get_button_press() == '1')
+			{
+				DUTYCYCLE = .5;
+				lcd_pos(1,0);
+				lcd_puts2("Volume: HIGH");
+			}
+			if (get_button_press() == '2')
+			{
+				DUTYCYCLE = .3;
+				lcd_pos(1,0);
+				lcd_puts2("Volume: MID");
+			}
+			if (get_button_press() == '3')
+			{
+				DUTYCYCLE = .1;
+				lcd_pos(1,0);
+				lcd_puts2("Volume: LOW");
+			}
+			if (get_button_press() == '4')
+			{
+				FMOD = 100;
+			}
+			if (get_button_press() == '5')
+			{
+				FMOD = 0;
+			}
+			if (get_button_press() == '6')
+			{
+				FMOD = -100;
+			}		
+			do //is state change
+			{
+				if (get_button_press() == '0')
+				{
+					song = WMIH;
+					lcd_pos(0,0);
+					lcd_puts2("When Mom Isn't Home");
+					State = Playing;
+				}
+				if (get_button_press() == '#')
+				{
+					song = BELL;
+					lcd_pos(0,0);
+					lcd_puts2("SchoolBells");
+					State = Playing;
+				}
+			} while (expression);
+			if (get_button_press() == '7')
+			{
+				TEMPO = 75;
+			}	
+			if (get_button_press() == '8')
+			{
+				TEMPO = 120;
+			}
+			if (get_button_press() == '9')
+			{
+				TEMPO = 150;
+			}			
+		}
+		case Playing:	
+		{
+			PlayNote(song[currentNote]);
+			currentNote++;
+		}
+	}
+}
 
 
 int main(void)

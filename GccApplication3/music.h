@@ -1,7 +1,7 @@
 #ifndef MUSIC
 #define MUSIC
 
-#define SPK_INIT DDRB &= 0x00
+#define SPK_INIT DDRB |= 0x01
 #define SPK_ON PORTB |= 0x01
 #define SPK_OFF PORTB &= 0x00
 #define NumNotes(x) sizeof(x)/sizeof(Note)
@@ -45,7 +45,6 @@
 #define Af5	602
 #define R 10
 
-#define TEMPO 120
 #define W 4
 #define H 2
 #define Q 1
@@ -54,6 +53,8 @@
 
 
 float DUTYCYCLE = .5;
+int FMOD = 0;
+int TEMPO = 120;
 
 typedef struct
 {
@@ -64,7 +65,7 @@ typedef struct
 
 void PlayNote(Note noteIn)
 {
-	int period = 2*noteIn.freq;
+	int period = 2*(noteIn.freq+FMOD);
 	int numPeriods = ((60.0/TEMPO)*noteIn.duration*1000000)/period;
 	int ton = period*DUTYCYCLE;
 	int toff = period-ton;
