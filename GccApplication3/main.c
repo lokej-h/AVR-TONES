@@ -23,7 +23,7 @@
 #define SET_HIGH(p,i) p |= (1<<i)
 
 enum PlayStates {Playing, Menu} State;
-int buttonPressed=0;
+//char buttonPressed=0;
 
 void Tick()
 {
@@ -31,10 +31,11 @@ void Tick()
 	static int currentNote;
 	static int songLen;
 	
-	buttonPressed = findWhichPin();
+	char buttonPressed = get_button_press();
 	switch(State)
 	{
 		case Playing:
+		{
 			if (buttonPressed == '*')
 			{
 				State = Menu;
@@ -43,16 +44,16 @@ void Tick()
 			{
 				State = Menu;
 			}
-			//else contiune to play
+			//else continue to play
 			else
 			{
 				PlayNote(song[currentNote]);
 				currentNote++;
 			}
 			break;
+		}
 		case Menu:
 		{
-			
 			if (buttonPressed == '1')
 			{
 				DUTYCYCLE = .5;
@@ -63,51 +64,67 @@ void Tick()
 			{
 				DUTYCYCLE = .3;
 				lcd_pos(1,0);
-				lcd_puts2("Volume: MID");
+				lcd_puts2("Volume: MID ");
 			}
 			else if (buttonPressed == '3')
 			{
 				DUTYCYCLE = .1;
 				lcd_pos(1,0);
-				lcd_puts2("Volume: LOW");
+				lcd_puts2("Volume: LOW ");
 			}
 			else if (buttonPressed == '4')
 			{
 				FMOD = 100;
+				lcd_pos(3,0);
+				lcd_puts2("Pitch: LOW  ");
 			}
 			else if (buttonPressed == '5')
 			{
 				FMOD = 0;
+				lcd_pos(3,0);
+				lcd_puts2("Pitch: NORM");
 			}
 			else if (buttonPressed == '6')
 			{
 				FMOD = -100;
+				lcd_pos(3,0);
+				lcd_puts2("Pitch: HIGH");
 			}
 			else if (buttonPressed == '0')
 				{
-					song = WMIH;
+					song = SHEEP;
 					lcd_pos(0,0);
-					lcd_puts2("When Mom Isn't Home");
+					lcd_puts2("Sheep Song  ");
+					songLen = 21;
+					currentNote = 0;
 					State = Playing;
 				}
 			else if (buttonPressed == '#')
 				{
 					song = BELL;
 					lcd_pos(0,0);
-					lcd_puts2("School Bells");
+					lcd_puts2("School Bells       ");
+					songLen = 18;
+					currentNote = 0;
 					State = Playing;
 				}
 			else if (buttonPressed == '7')
 			{
 				TEMPO = 75;
+				lcd_pos(4,0);
+				lcd_puts2("Tempo: SLOW  ");
 			}
 			else if (buttonPressed == '8')
 			{
 				TEMPO = 120;
+				lcd_pos(4,0);
+				lcd_puts2("Tempo: NORM   ");
 			}
 			else if (buttonPressed == '9')
 			{
-				TEMPO = 150;
+				TEMPO = 210;
+				lcd_pos(4,0);
+				lcd_puts2("Tempo: FAST   ");
 			}
 			break;
 		}		
@@ -145,6 +162,10 @@ int main(void)
 		*/
 		
 		Tick();
+		// PlaySong(new_song);
+		// avr_wait(1000);
+		// note_test(C4);
+		//button_test();
 	}
 }
 

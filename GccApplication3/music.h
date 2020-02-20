@@ -50,6 +50,7 @@
 #define Q 1
 #define Ei .5
 #define S .25
+#define T .125
 
 
 float DUTYCYCLE = .3;
@@ -69,14 +70,15 @@ void PlayNote(Note noteIn)
 	int numPeriods = ((60.0/TEMPO)*noteIn.duration*1000000)/period;
 	int ton = period*DUTYCYCLE;
 	int toff = period-ton;
-	for(int i=0; i<numPeriods; ++i)
+	if (noteIn.freq == 10)
 	{
-		if (noteIn.freq == 10)
+		SPK_OFF;
+		avr_wait_usec((60.0/TEMPO)*noteIn.duration*1000000);
+	}
+	else
+	{
+		for(int i=0; i<numPeriods; ++i)
 		{
-			SPK_OFF;
-			avr_wait_usec((60.0/TEMPO)*1000000);
-		}
-		else{
 			SPK_ON;
 			avr_wait_usec(ton);
 			SPK_OFF;
@@ -87,7 +89,7 @@ void PlayNote(Note noteIn)
 
 void PlaySong(Note songIn[])
 {
-	for(int i=0; i<18; ++i)
+	for(int i=0; i<13; ++i)
 	{
 		PlayNote(songIn[i]);
 	}
@@ -108,35 +110,52 @@ void note_test(int note)
 
 Note new_song[] ={
     {C4, Q},
+	{R, Q},
     {E4, Q},
+	{R, Q},
     {G4, Q},
+	{R, Q},
     {B4, Q},
+	{R, W},
     {G4, Q},
+	{R, Q},
     {E4, Q},
-    {C4, Q},
+	{R, Q},
+    {C4, Q}
 };
 
-Note WMIH[52] = {
+Note WMIH[74] = {
 	{Bf3, Ei},
 	{G4, S},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
 	{D4, Ei},
 	{Ef4, Ei},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
 	{Ef4, Ei},
 	{D4, H},
 	
 	{Bf3, Ei},
 	{G4, S},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
 	{D4, Ei},
 	{Ef4, Ei},
@@ -147,24 +166,35 @@ Note WMIH[52] = {
 	
 	{Bf3, Ei},
 	{G4, S},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
 	{D4, Ei},
 	{Ef4, Ei},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
 	{Ef4, Ei},
 	{D4, H},
-	
+
 	{Bf3, Ei},
 	{G4, S},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
+	{R, T},
 	{G4, Ei},
 	{D4, Ei},
 	{Ef4, Ei},
@@ -174,7 +204,7 @@ Note WMIH[52] = {
 	{G3, H}
 };
 
-Note BELL[] = {
+Note BELL[18] = {
 	{G4, Q},
 	{F4, Q},
 	{E4, Q},
@@ -188,14 +218,38 @@ Note BELL[] = {
 	{C4, Q},
 	{D4, Q},
 			
-	{G3, W},
-	{R,	S},
-	{G3, W},
+	{G3, H},
+	{R,	T},
+	{G3, H},
 	
 	{G3, Q},
 	{A3, Q},
 	{B3, Q},
 	{C4, Q}
+};
+
+Note SHEEP[21] = {
+	{Cs4, Q},
+		{Ds4, Q},
+		{Fs4, Q},
+		{Gs4, Q},
+		{As4, Q},
+	{Cs4, Q},
+		{Ds4, Q},
+		{Fs4, Q},
+		{Gs4, Q},
+		{As4, Q},
+	{As4, Q},
+		{Gs4, Q},
+			{R, T},
+		{Gs4, Q},
+		{Fs4, Q},
+			{Ds4, Q},
+	{Cs4, Q},
+		{Ds4, Q},
+		{Fs4, Q},
+		{Gs4, Q},
+		{Fs4, Q}
 };
 
 #endif // MUSIC

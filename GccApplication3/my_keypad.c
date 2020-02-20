@@ -138,7 +138,7 @@ unsigned char findWhichPin()
 	if (row != -1 && col != -1)
 	{
 		// wait until button up
-		while (get_row() != -1 && get_col() != -1) {}
+		// while (get_row() != -1 && get_col() != -1) {}
 		return ((row*4)+col+1);
 	}
 	return 0;
